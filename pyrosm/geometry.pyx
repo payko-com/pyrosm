@@ -36,7 +36,8 @@ cpdef fix_geometry(geometry, diff_threshold=20):
         except ZeroDivisionError:
             pass
         except Exception as e:
-            raise e
+            pass
+            #raise e
 
     # If geometry is MultiPolygon do not try fix bowtie
     if isinstance(geometry, MultiPolygon):
@@ -55,7 +56,8 @@ cpdef fix_geometry(geometry, diff_threshold=20):
         except ZeroDivisionError:
             pass
         except Exception as e:
-            raise e
+            pass
+            #raise e
     # Otherwise return original geometry
     return geometry
 
@@ -104,13 +106,16 @@ cdef create_linear_ring(coordinates):
             return None
         elif "point array must contain" in str(e):
             return None
-        raise e
+        return None
+        #raise e
     # pygeos 0.8.0 throws ValueError
     except ValueError as e:
         if "Provide at least 4 coordinates" in str(e):
             return None
+        return None
     except Exception as e:
-        raise e
+        return None
+        #raise e
 
 
 cdef create_linestring(coordinates):
@@ -121,14 +126,18 @@ cdef create_linestring(coordinates):
             return None
         elif "point array must contain" in str(e):
             return None
-        raise e
+        return None
+        #raise e
     except ValueError as e:
         if "Provide at least 2 coordinates" in str(e):
             return None
         if "not have enough dimensions" in str(e):
-            raise e
+            return None
+            #raise e
+        return None
     except Exception as e:
-        raise e
+        return None
+        #raise e
 
 
 cdef _create_point_geometries(xarray, yarray):
@@ -328,9 +337,11 @@ cdef create_linestring_geometry(nodes, node_coordinates):
                 # node_data should always be a list
                 return None, None, None, []
             else:
-                raise e
+                return None, None, None, []
+                #raise e
         except Exception as e:
-            raise e
+            return None, None, None, []
+            #raise e
 
     else:
         # node_data should always be a list
@@ -360,13 +371,16 @@ cdef create_polygon_geometry(nodes, node_coordinates):
             if "Invalid number of points in LinearRing" in str(e):
                 return None
             else:
-                raise e
+                return None
+                #raise e
         # pygeos 0.8.0 throws ValueError
         except ValueError as e:
             if "Provide at least 4 coordinates" in str(e):
                 return None
+            return None
         except Exception as e:
-            raise e
+            return None
+            #raise e
     else:
         return None
 
