@@ -90,7 +90,7 @@ cpdef prepare_way_gdf(node_coordinates, ways, parse_network, calculate_seg_lengt
             v = np.concatenate(way_gdf["v"].to_list())
 
             # Explode multi-geometries
-            way_gdf = way_gdf.explode("geometry").reset_index(drop=True)
+            way_gdf = way_gdf.reset_index(drop=True).explode("geometry")
             way_gdf = gpd.GeoDataFrame(way_gdf, geometry="geometry", crs="epsg:4326")
 
             # Update from/to-ids
