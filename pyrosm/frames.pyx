@@ -164,7 +164,7 @@ cpdef prepare_geodataframe(nodes, node_coordinates, ways,
             return None, None
         return None
 
-    gdf = gdf.dropna(subset=['geometry']).reset_index(drop=True)
+    gdf = gdf.reset_index(drop=True).dropna(subset=['geometry'])
 
     # When parsing the network with nodes, prepare the nodes frame
     if node_attr is not None:
